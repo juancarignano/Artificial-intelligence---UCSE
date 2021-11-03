@@ -1,7 +1,8 @@
 from typing import Tuple
 from simpleai.search import CspProblem, backtrack
+
 #Mejoras
-    #En baterias, ruedas, carga extra, comunicacion
+#En baterias, ruedas, carga extra, comunicacion
 
 #Variable
 #Mejora baterias:
@@ -17,7 +18,7 @@ from simpleai.search import CspProblem, backtrack
     #Dominios:
     # suministros humanitarios ARRIBA: Costo movimiento + 10
     # ATRAS: NO SE PUEDE PONER EN RUEDAS EXTRA PATAS Y COSTO +10
-    #
+    
 def rediseñar_robot():
 
     #Variables del problema son cada una de las mejoras posibles.
@@ -27,7 +28,6 @@ def rediseñar_robot():
         "Mejora_carga_extra",
         "Mejora_comunicacion"
     ]
-    #variables = [("Mejora_Bateria", "Mejora_Ruedas", "Mejora_carga_extra", "Mejora_comunicacion")]
     #El dominio esta compuesto por: variable = ("nombre mejora", aumento de bateria, aumento en costo por movimiento)
     domains = {
             "Mejora_Bateria": [("baterias_chicas", 5000, 10), ("baterias_medianas", 7500, 20), ("baterias_grandes", 10000, 50)],
@@ -62,7 +62,8 @@ def rediseñar_robot():
 
     constraints.append((variables, validar_no_patas_extras))
 
-    #Si hay radios, no hay mejoras en los motores
+    #Si hay radios, no hay mejoras en los motores 
+    # —> Mejora comunicacion = radio <==> mejora rueda != mejores motores
     def validar_radio_sin_motores(variables, values):
         mejoraBateria,mejoraRueda, mejoracargaExtra, mejoraComunicacion = values
         if mejoraComunicacion[0] == "radios":
@@ -73,7 +74,8 @@ def rediseñar_robot():
 
     constraints.append((variables, validar_radio_sin_motores))
 
-    #si hay videollamadas, se necesita par extras de patas u orugas
+    #si hay videollamadas, se necesita par extras de patas u orugas 
+    # —> Mejora comunicacion = videollamada <==> mejora rueda = patas extras o mejora rueda = oruga
     def validar_videollamada_con_patas_extra(variables, values):
         mejoraBateria,mejoraRueda, mejoracargaExtra, mejoraComunicacion = values
         if mejoraComunicacion[0] == "video_llamadas":
@@ -86,7 +88,7 @@ def rediseñar_robot():
     
     constraints.append((variables, validar_videollamada_con_patas_extra))
 
-    #la autonomia debe ser de 50 min
+    # la autonomia debe ser de 50 min —> autunomia >= 50
     def validar_autonomia(variables, values):
         mejoraBateria,mejoraRueda, mejoracargaExtra, mejoraComunicacion = values
         bateria = 1000 + mejoraBateria[1]
