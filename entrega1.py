@@ -63,8 +63,11 @@ def planear_escaneo(tuneles, robots):
                     posible_move.append((new_position))  
                     new_position = (row_robot, col_robot + 1) # vemos a la derecha
                     posible_move.append((new_position))
+
                     # de aca, algunas no son posibles acceder, por ende hay que filtrarlas:
                     for new_position in posible_move:
+                        # si la casilla que nos pasaron en el mapa, existe en el mismo
+                        # agregamos una acción nueva
                         if new_position in tuneles:
                             available_actions.append((id_robot, 'mover', new_position))
 
